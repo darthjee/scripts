@@ -1,0 +1,51 @@
+#!/bin/bash
+
+function start_srv
+{
+  BASE=/home/darthjee/arquivos/svn
+
+  PROGDIR="programas"
+  PROGPORT=6010
+  PROG="$BASE/$PROGDIR --listen-port $PROGPORT"
+
+  FACUDIR="facu"
+  FACUPORT=6020
+  FACU="$BASE/$FACUDIR --listen-port $FACUPORT"
+
+  LIVRODIR="livros"
+  LIVROPORT=6030
+  LIVRO="$BASE/$LIVRODIR --listen-port $LIVROPORT"
+
+  WEBDIR="webpages"
+  WEBPORT=6040
+  WEB="$BASE/$WEBDIR --listen-port $WEBPORT"
+
+  for SRVARG in "$PROG" "$FACU" "$LIVRO" "$WEB"; do
+    svnserve -d -r $SRVARG;
+  done
+}
+
+function stop_srv
+{
+  killall svnserve;
+}
+
+function restart_srv
+{
+  stop_srv
+  start_srv
+}
+
+
+if [ "$1" == "" ] || [ "$1" != "start" ] && [ "$1" != "stop" ] && [ "$1" != "restart" ]; then
+  echo "Uso: $0 [start|restart|stop]"
+else
+  if [ "$1" == "start" ]; then
+    start_srv;
+  elif [ "$1" == "stop" ]; then
+    stop_srv;
+  elif [ "$1" == "restart" ]; then
+    restart_srv;
+  fi
+fi
+
