@@ -11,7 +11,7 @@ if [ "$1" ]; then
 fi
 
 if [ -f $LISTA ]; then
-  mplayer -shuffle -fs -loop 0 -playlist lista.m3u
+  mplayer -shuffle -fs -zoom -loop 0 -playlist lista.m3u
 else
   echo "Lista $LISTA nao encontrada"
 fi
