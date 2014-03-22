@@ -15,7 +15,7 @@ has_prog() {
 install_pkgs() {
   PKGS="vim screen libmysqld-dev libmysqlclient-dev mysql-client mysql-server php5-cgi apache2"
   PKGS="$PKGS postgresql-server-dev-9.1 postgresql-9.1 curl cups swat abiword imagemagick"
-  PKGS="$PKGS openvpn git"
+  PKGS="$PKGS openvpn git meld"
   apt-get install $PKGS
 }
 
