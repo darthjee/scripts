@@ -50,7 +50,11 @@ install_postgres() {
   fi
 }
 
-STEPS="pkgs rvm postgres"
+install_heroku(){
+  wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+}
+
+STEPS="pkgs rvm postgres heroku"
 
 if $(is_root); then
   if [ $1 ]; then
