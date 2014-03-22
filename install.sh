@@ -35,7 +35,22 @@ install_rvm() {
   done
 }
 
-STEPS="pkgs rvm"
+install_postgres() {
+  FILE="/etc/postgresql/9.1/main/pg_hba.conf"
+
+  if ! (grep "postgres\\s\\+md5" $FILE > /dev/null); then
+    apt-get install postgresql-server-dev-9.1
+    EXPRESSION="s/\(local\\s\\+all\\s\\+postgres\\s\\+\)\(peer\|md5\)/\\1trust/g"
+    sed -e $EXPRESSION -i $FILE
+    /etc/init.d/postgresql restart
+    echo "ALTER USER postgres WITH PASSWORD 'postgres'" | psql --user postgres
+    EXPRESSION="s/\(local\\s\\+all\\s\\+postgres\\s\\+\)trust/\\1md5/g"
+    sed -e $EXPRESSION -i $FILE
+    /etc/init.d/postgresql restart
+  fi
+}
+
+STEPS="pkgs rvm postgres"
 
 if $(is_root); then
   if [ $1 ]; then
