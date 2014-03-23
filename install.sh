@@ -35,6 +35,10 @@ install_rvm() {
   done
 }
 
+install_rvm_config() {
+  rvm user gemsets
+}
+
 install_postgres() {
   FILE="/etc/postgresql/9.1/main/pg_hba.conf"
 
@@ -56,8 +60,8 @@ install_heroku(){
   fi
 }
 
-ROOT_STEPS="pkgs postgres heroku"
-STEPS="rvm"
+ROOT_STEPS="pkgs postgres heroku rvm"
+STEPS="rvm_config"
 
 if [ $1 ]; then
   while [ $1 ]; do
