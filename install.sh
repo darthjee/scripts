@@ -51,25 +51,28 @@ install_postgres() {
 }
 
 install_heroku(){
-  wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+  if ! (heroku > /dev/null); then
+    wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+  fi
 }
 
-STEPS="pkgs rvm postgres heroku"
+ROOT_STEPS="pkgs postgres heroku"
+STEPS="rvm"
 
-if $(is_root); then
-  if [ $1 ]; then
-    while [ $1 ]; do
-      if [ $1 == "all" ]; then
-        $0 $STEPS
+if [ $1 ]; then
+  while [ $1 ]; do
+    if [ $1 == "all" ]; then
+      $0 $ROOT_STEPS $STEPS
+    else
+      if (echo $ROOT_STEPS | grep "\b$1\b" > /dev/null) && ! $(is_root); then
+        sudo $0 $1
       else
         install_$1
       fi
+    fi
 
-      shift 1
-    done
-  else
-    $0 all
-  fi
+    shift 1
+  done
 else
-  sudo $0 $*
+  $0 all
 fi
