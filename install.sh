@@ -1,5 +1,7 @@
 #!/bin/bash
 
+RVM_PATH="/usr/local/rvm/scripts/rvm"
+
 is_root() {
   if [[ $EUID == '0' ]]; then
     return 0
@@ -25,7 +27,7 @@ install_rvm() {
     \curl -sSL https://get.rvm.io | bash -s stable --ruby
     source /usr/local/rvm/scripts/rvm
 
-    echo "source /usr/local/rvm/scripts/rvm" >> /etc/profile
+    echo "source $RVM_PATH" >> /etc/profile
     echo no rvm
   fi
   RUBIES="1.9.3-p392 2.0.0-p247 2.0.0-p353"
@@ -36,6 +38,11 @@ install_rvm() {
 }
 
 install_rvm_config() {
+  if (grep $RVM_PATH ~/.bash_profile > /dev/null); then
+    echo "source $RVM_PATH" >> ~/.bash_profile
+    echo "rvm user gemsets" >> ~/.bash_profile
+  fi
+  source $RVM_PATH
   rvm user gemsets
 }
 
